@@ -4,9 +4,11 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using QLNS.Models;
+using QLNS.ViewsModel;
 
 namespace QLNS.Controllers
 {
@@ -25,9 +27,41 @@ namespace QLNS.Controllers
         {
             return View();
         }
-        public ActionResult Register(string username, string password)
+        public ActionResult Register()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Register(ResgisterForm infor)
+        {
+            var e = new Employee()
+            {
+                FirstName = infor.FirstName,
+                LastName = infor.LastName,
+                Email = infor.Email,
+                Coe = 1.2,
+                StartDate = DateTime.Now,
+            };
+            db.Employees.Add(e);
+            db.SaveChanges();
+            var a = new Account()
+            {
+                Username = infor.Email,
+                Password = infor.Password,
+            };
+            a.Id = e.Id;
+            db.Accounts.Add(a);
+            db.SaveChanges();
+            var r = new Account_Position()
+            {
+                AccountId = a.Id,
+                PositionId = db.Positions.Where(p=>p.Name== "Employee").FirstOrDefault().Id,
+            };
+            db.Account_Positions.Add(r);
+            db.SaveChanges();
+            return RedirectToAction("Login");
         }
         public ActionResult Details(int? id)
         {

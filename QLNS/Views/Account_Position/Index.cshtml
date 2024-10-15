@@ -1,0 +1,39 @@
+﻿@model IEnumerable<QLNS.Models.Account_Position>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Account.Username)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Position.Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Account.Username)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Position.Name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { accountId = item.AccountId }) |
+            @Html.ActionLink("Details", "Details", new { accountId = item.AccountId }) |
+            @Html.ActionLink("Delete", "Delete", new { accountId= item.AccountId })
+        </td>
+    </tr>
+}
+
+</table>
