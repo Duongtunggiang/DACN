@@ -126,9 +126,11 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RoleAuthorizationAttribute.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\Account_PositionController.cs" />
+    <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PositionsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -146,6 +148,7 @@
     <Compile Include="Models\QLNSContext.cs" />
     <Compile Include="Models\Salary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewsModel\LoginForm.cs" />
     <Compile Include="ViewsModel\ResgisterForm.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -2072,6 +2075,12 @@
     <Content Include="Views\Account_Position\Details.cshtml" />
     <Content Include="Views\Account_Position\Edit.cshtml" />
     <Content Include="Views\Account_Position\Index.cshtml" />
+    <Content Include="Views\Employees\Create.cshtml" />
+    <Content Include="Views\Employees\Delete.cshtml" />
+    <Content Include="Views\Employees\Details.cshtml" />
+    <Content Include="Views\Employees\Edit.cshtml" />
+    <Content Include="Views\Employees\Index.cshtml" />
+    <Content Include="Views\Accounts\AccountInfor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

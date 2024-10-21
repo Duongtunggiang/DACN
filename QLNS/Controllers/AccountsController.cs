@@ -7,31 +7,57 @@ using System.Net;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
+using QLNS.App_Start;
 using QLNS.Models;
 using QLNS.ViewsModel;
 
 namespace QLNS.Controllers
 {
+    
     public class AccountsController : Controller
     {
         private QLNSContext db = new QLNSContext();
 
         // GET: Accounts
+        
         public ActionResult Index()
         {
             var accounts = db.Accounts.Include(a => a.Employee);
             return View(accounts.ToList());
         }
-
-        public ActionResult Login(string username, string password)
+        [AllowAnonymous]
+        public ActionResult Login()
         {
             return View();
         }
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(LoginForm acc)
+        {
+            var e= db.Accounts.Where(a=>a.Username==acc.UserName && a.Password==acc.Password).FirstOrDefault();
+            if (e==null)
+            {
+                ViewData["msg"] = "Tên đăng nhập hoặc mật khẩu không chính xác";
+                return View();
+            }
+            var idp=e.Account_Positions.FirstOrDefault().PositionId;
+            var namep=db.Positions.Where(n=>n.Id==idp).FirstOrDefault().Name;
+            if (namep != null)
+            {
+                Session["role"] = namep;
+                Session["accountId"] = e.Id;
+                return RedirectToAction("Index", "Home");
+            }
+            return View();
+            
+        }
+        [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
         }
-
+        [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Register(ResgisterForm infor)
@@ -61,6 +87,11 @@ namespace QLNS.Controllers
             };
             db.Account_Positions.Add(r);
             db.SaveChanges();
+            return RedirectToAction("Login");
+        }
+        public ActionResult Logout()
+        {
+            Session.Clear();
             return RedirectToAction("Login");
         }
         public ActionResult Details(int? id)
@@ -170,7 +201,27 @@ namespace QLNS.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
+        public ActionResult AccountInfor()
+        {
+            var accountIdSession = Session["accountId"];
+            if (accountIdSession != null && int.TryParse(accountIdSession.ToString(), out int accountId))
+            {
+                var user = db.Employees.Where(e => e.Id == accountId).FirstOrDefault();
+                if (user != null)
+                {
+                    return View(user);
+                }
+                else
+                {
+                    return View();
+                }
+            }
+            else
+            {
+                return View();
+            }
+            
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

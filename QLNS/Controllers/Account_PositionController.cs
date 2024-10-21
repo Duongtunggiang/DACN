@@ -22,13 +22,13 @@ namespace QLNS.Controllers
         }
 
         // GET: Account_Position/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? accountId)
         {
-            if (id == null)
+            if (accountId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Account_Position account_Position = db.Account_Positions.Find(id);
+            Account_Position account_Position = db.Account_Positions.Where(e=>e.AccountId==accountId).FirstOrDefault();
             if (account_Position == null)
             {
                 return HttpNotFound();
@@ -64,13 +64,13 @@ namespace QLNS.Controllers
         }
 
         // GET: Account_Position/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? accountId)
         {
-            if (id == null)
+            if (accountId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Account_Position account_Position = db.Account_Positions.Find(id);
+            Account_Position account_Position = db.Account_Positions.Where(e => e.AccountId == accountId).FirstOrDefault();
             if (account_Position == null)
             {
                 return HttpNotFound();
@@ -89,8 +89,21 @@ namespace QLNS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(account_Position).State = EntityState.Modified;
+                // Tìm bản ghi cũ
+                var datachange = db.Account_Positions.Where(ap => ap.AccountId == account_Position.AccountId).FirstOrDefault();
+
+                // Nếu tìm thấy bản ghi cũ
+                if (datachange != null)
+                {
+                    // Xóa bản ghi cũ
+                    db.Account_Positions.Remove(datachange);
+                    db.SaveChanges();
+                }
+                 
+                // Tạo một bản ghi mới với PositionId mới
+                db.Account_Positions.Add(account_Position);
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
             ViewBag.AccountId = new SelectList(db.Accounts, "Id", "Username", account_Position.AccountId);
