@@ -222,6 +222,36 @@ namespace QLNS.Controllers
             }
             
         }
+        public ActionResult EditInfor(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Employee employee = db.Employees.Find(id);
+            if (employee == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.Id = new SelectList(db.Accounts, "Id", "Username", employee.Id);
+            ViewBag.Id = new SelectList(db.Salaries, "Id", "Id", employee.Id);
+            return View(employee);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditInfor([Bind(Include = "Id,FirstName,LastName,Age,Address,Phone,Avatar,Gender,StartDate,Email,Coe,Description,AccountId")] Employee employee)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(employee).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("AccountInfor");
+            }
+            ViewBag.Id = new SelectList(db.Accounts, "Id", "Username", employee.Id);
+            ViewBag.Id = new SelectList(db.Salaries, "Id", "Id", employee.Id);
+            return View(employee);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
