@@ -21,10 +21,8 @@
                     e => e.Id,
                     new Position { Name="Admin" , Description="đây là quản lý" },
                     new Position { Name = "Employee", Description = "đây là nhân viên" }
-
                 );
             }
-
             if (!context.Employees.Any())
             {
                 var emp = new Employee()

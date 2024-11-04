@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Principal;
@@ -107,7 +108,7 @@ namespace QLNS.Controllers
             }
             return View(account);
         }
-
+        
         // GET: Accounts/Create
         public ActionResult Create()
         {
@@ -129,6 +130,7 @@ namespace QLNS.Controllers
                     FirstName = "Dương",
                     LastName = "Dương",
                     Coe = 1.2,
+                    Email=account.Username,
                     StartDate = DateTime.Now,
                 };
                 db.Employees.Add(e);
@@ -136,9 +138,15 @@ namespace QLNS.Controllers
                 account.Id = e.Id;
                 db.Accounts.Add(account);
                 db.SaveChanges();
+                var role = new Account_Position()
+                {
+                    AccountId = account.Id,
+                    PositionId = db.Positions.Where(r => r.Name == "Employee").FirstOrDefault().Id,
+                };
+                db.Account_Positions.Add(role);
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
             ViewBag.Id = new SelectList(db.Employees, "Id", "FirstName", account.Id);
             return View(account);
         }
@@ -239,19 +247,27 @@ namespace QLNS.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditInfor([Bind(Include = "Id,FirstName,LastName,Age,Address,Phone,Avatar,Gender,StartDate,Email,Coe,Description,AccountId")] Employee employee)
+        public ActionResult EditInfor([Bind(Include = "Id,FirstName,LastName,Age,Address,Phone,Gender,StartDate,Email,Coe,Description,AccountId")] Employee employee, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+                if (file.ContentLength > 0)
+                {
+                    string _FileName = Path.GetFileName(file.FileName);
+                    string _path = Path.Combine(Server.MapPath("~/UploadedFiles"), _FileName);
+                    file.SaveAs(_path);
+                }
+                ViewBag.Message = "File Uploaded Successfully!!";
                 db.Entry(employee).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("AccountInfor");
             }
             ViewBag.Id = new SelectList(db.Accounts, "Id", "Username", employee.Id);
             ViewBag.Id = new SelectList(db.Salaries, "Id", "Id", employee.Id);
+            
             return View(employee);
         }
-
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)
