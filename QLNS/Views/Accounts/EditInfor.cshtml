@@ -6,7 +6,7 @@
 
 <h2>Edit</h2>
 
-@using (Html.BeginForm("UploadFile", "Upload", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("EditInfor", "Accounts", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -58,7 +58,6 @@
 
         <div class="form-group">
             @Html.TextBox("file", "", new { type = "file" }) <br />
-            <input type="submit" value="Upload" />
             @ViewBag.Message
         </div>
 

@@ -37,6 +37,7 @@ namespace QLNS.Controllers
         public ActionResult Login(LoginForm acc)
         {
             var e= db.Accounts.Where(a=>a.Username==acc.UserName && a.Password==acc.Password).FirstOrDefault();
+            //var inf= db.Employees.Where(i=>i.Id==e.).FirstOrDefault();
             if (e==null)
             {
                 ViewData["msg"] = "Tên đăng nhập hoặc mật khẩu không chính xác";
@@ -48,6 +49,7 @@ namespace QLNS.Controllers
             {
                 Session["role"] = namep;
                 Session["accountId"] = e.Id;
+                Session["avatar"] = e.Employee.Avatar;
                 return RedirectToAction("Index", "Home");
             }
             return View();
@@ -70,6 +72,7 @@ namespace QLNS.Controllers
                 Email = infor.Email,
                 Coe = 1.2,
                 StartDate = DateTime.Now,
+                Avatar= "avatar.png"
             };
             db.Employees.Add(e);
             db.SaveChanges();
@@ -205,7 +208,9 @@ namespace QLNS.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Account account = db.Accounts.Find(id);
+            Employee employee = db.Employees.Find(id);
             db.Accounts.Remove(account);
+            db.Employees.Remove(employee);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -253,11 +258,21 @@ namespace QLNS.Controllers
             {
                 if (file.ContentLength > 0)
                 {
-                    string _FileName = Path.GetFileName(file.FileName);
-                    string _path = Path.Combine(Server.MapPath("~/UploadedFiles"), _FileName);
+                    string originalFileName = Path.GetFileNameWithoutExtension(file.FileName);
+                    string fileExtension = Path.GetExtension(file.FileName);
+
+                    string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+                    string newFileName = $"{originalFileName}_{timestamp}{fileExtension}";
+
+                    string _path = Path.Combine(Server.MapPath("~/UploadedFiles"), newFileName);
+
                     file.SaveAs(_path);
+
+                    employee.Avatar = "/UploadedFiles/"+newFileName;
+                    @Session["avatar"] = employee.Avatar;
                 }
                 ViewBag.Message = "File Uploaded Successfully!!";
+                
                 db.Entry(employee).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("AccountInfor");

@@ -4,9 +4,9 @@
     ViewBag.Title = "Index";
 }
 <link href="~/Assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-<p>
+@*<p>
     @Html.ActionLink("Create New", "Create")
-</p>
+</p>*@
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">Danh sách nhân viên</h6>
@@ -80,8 +80,8 @@
                             
                             <td>
                                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                                @Html.ActionLink("Details", "Details", new { id = item.Id }) 
+                                @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
                             </td>
                         </tr>
                     }
