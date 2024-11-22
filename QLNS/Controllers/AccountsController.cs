@@ -50,6 +50,7 @@ namespace QLNS.Controllers
                 Session["role"] = namep;
                 Session["accountId"] = e.Id;
                 Session["avatar"] = e.Employee.Avatar;
+                Session["name"] = e.Employee.LastName+' '+e.Employee.FirstName;
                 return RedirectToAction("Index", "Home");
             }
             return View();
@@ -73,6 +74,7 @@ namespace QLNS.Controllers
                 Coe = 1.2,
                 StartDate = DateTime.Now,
                 Avatar= "avatar.png"
+
             };
             db.Employees.Add(e);
             db.SaveChanges();
