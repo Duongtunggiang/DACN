@@ -2,12 +2,16 @@
 
 @{
     ViewBag.Title = "Index";
+    var stt = 0;
 }
 <link href="~/Assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-<h2>Danh sách tài khoản</h2>
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<a data-bs-toggle="modal" data-bs-target="#createAccModal" class="btn btn-primary btn-icon-split" style="margin-bottom:10px">
+    <span class="icon text-white-50">
+        +
+    </span>
+    <span class="text">Thêm tài khoản</span>
+</a>
+
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">Danh sách tài khoản</h6>
@@ -17,6 +21,9 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
+                        <th>
+                            STT
+                        </th>
                         <th>
                             @Html.DisplayNameFor(model => model.Employee.FirstName)
                         </th>
@@ -31,11 +38,17 @@
                         </th>
                     </tr>
                 </thead>
-                
+
                 <tbody>
                     @foreach (var item in Model)
                     {
                         <tr>
+                            <td>
+                                @{
+                                    stt++;
+                                }
+                                @stt
+                            </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Employee.FirstName)
                             </td>
@@ -46,9 +59,32 @@
                                 @Html.DisplayFor(modelItem => item.Password)
                             </td>
                             <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editAccModal" data-id="@item.Id">
+                                    Sửa
+                                </button>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteSalaryModal_@item.Id" >
+                                    Xóa
+                                </button>
+                                <div class="modal fade" id="deleteSalaryModal_@item.Id" tabindex="-1" role="dialog" aria-labelledby="deleteSalaryModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Chắc chắn xóa?</h5>
+                                                <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">Bán có chắc chắn muốn xóa bản ghi này</div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Hủy</button>
+                                                <form action="@Url.Action("DeleteConfirmed", "Salaries", new { id = item.Id })" method="post">
+                                                    @Html.AntiForgeryToken()
+                                                    <button type="submit" class="btn btn-danger">Xóa</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     }
@@ -57,9 +93,81 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="createAccModal" tabindex="-1" role="dialog" aria-labelledby=createAccModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createAccModalLabel">Thêm mới</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="createAccContent">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editAccModal" tabindex="-1" role="dialog" aria-labelledby=editAccModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editAccModalLabel">Sửa</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="editAccContent">
+                <div class="text-center"><span>Đang tải dữ liệu...</span></div>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts{
+    <script>
+
+        $(document).ready(function () {
+
+            $('#createAccModal').on('show.bs.modal', function (event) {
+                // Gửi AJAX request
+                $.ajax({
+                    url: `/Accounts/Create`,
+                    type: 'GET',
+                    success: function (data) {
+
+                        $('#createAccContent').html(data);
+                        console.log(data)
+                    }
+                });
+            });
+            
+        });
+    </script>
+    <script>
+        $('#editAccModal').on('show.bs.modal', function (event) {
+
+            var button = $(event.relatedTarget);
+
+            var employeeId = button.data('id');
+
+
+            // Gửi AJAX request
+            $.ajax({
+                url: `/Accounts/Edit/${employeeId}`,
+                type: 'GET',
+                success: function (data) {
+
+                    $('#editAccContent').html(data);
+                    console.log(data)
+                },
+                error: function () {
+
+                    $('#editAccContent').html('<p class="text-danger">Không thể tải dữ liệu.</p>');
+                }
+            });
+        });
+    </script>
     <script src="~/Assets/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
     <script src="~/Assets/js/demo/datatables-demo.js"></script>
-}
 
+}

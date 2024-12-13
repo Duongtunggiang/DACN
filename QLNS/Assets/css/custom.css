@@ -1,0 +1,25 @@
+﻿.avatar{
+    text-align:center;
+    color:black;
+}
+.avatar .name{
+    font-size:20px;
+    font-weight:600;
+}
+.avatar img{
+    height:150px;
+    width:150px;
+    object-fit:cover;
+    border-radius:50%;
+    margin-bottom:10px;
+}
+.infor{
+    color:black;
+}
+.infor .title{
+    font-weight:700
+}
+.infor .qrcode img{
+    width: 100px;
+}
+

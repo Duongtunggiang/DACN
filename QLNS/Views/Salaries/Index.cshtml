@@ -1,0 +1,162 @@
+﻿@model IEnumerable<QLNS.Models.Salary>
+
+@{
+    ViewBag.Title = "Index";
+    var stt = 0;
+}
+
+<link href="~/Assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+<a href="@Url.Action("UpdateSalaryTable", "Salaries")" class="btn btn-info  btn-icon-split" style="margin-bottom:10px">
+    <span class="icon text-white-50">
+        +
+    </span>
+    <span class="text">Cập nhật bảng</span>
+</a>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Danh sách tài khoản</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            STT
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NameEmployee)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SalaryBase)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.KPI)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DateVacation)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.IdCheck)
+                        </th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @{
+                                    stt++;
+                                }
+                                @stt
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NameEmployee)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SalaryBase)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.KPI)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateVacation)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdCheck)
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editSalaryModal" data-id="@item.Id">
+                                    Sửa
+                                </button>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteSalaryModal_@item.Id" data-id="@item.Id">
+                                    Xóa
+                                </button>
+                                <div class="modal fade" id="deleteSalaryModal_@item.Id" tabindex="-1" role="dialog" aria-labelledby="deleteSalaryModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Chắc chắn xóa?</h5>
+                                                <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">Bán có chắc chắn muốn xóa bản ghi này</div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Hủy</button>
+                                                <form action="@Url.Action("DeleteConfirmed", "Salaries", new { id = item.Id })" method="post">
+                                                    @Html.AntiForgeryToken()
+                                                    <button type="submit" class="btn btn-danger">Xóa</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editSalaryModal" tabindex="-1" role="dialog" aria-labelledby="editSalaryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editSalaryModalLabel">Sửa</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="editSalaryContent">
+                <div class="text-center"><span>Đang tải dữ liệu...</span></div>
+            </div>
+           
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+
+        $(document).ready(function () {
+
+            $('#editSalaryModal').on('show.bs.modal', function (event) {
+
+                var button = $(event.relatedTarget);
+
+                var employeeId = button.data('id');
+
+
+                // Gửi AJAX request
+                $.ajax({
+                    url: `/Salaries/Edit/${employeeId}`,
+                    type: 'GET',
+                    success: function (data) {
+
+                        $('#editSalaryContent').html(data);
+                        console.log(data)
+                    },
+                    error: function () {
+
+                        $('#editSalaryContent').html('<p class="text-danger">Không thể tải dữ liệu.</p>');
+                    }
+                });
+            });
+
+
+            $('#employeeDetailModal').on('hidden.bs.modal', function () {
+                $('#employeeDetailContent').html('<div class="text-center"><span>Đang tải dữ liệu...</span></div>');
+            });
+        });
+    </script>
+    <script src="~/Assets/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Assets/js/demo/datatables-demo.js"></script>
+
+}
+

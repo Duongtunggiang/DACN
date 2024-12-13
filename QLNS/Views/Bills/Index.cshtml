@@ -1,0 +1,180 @@
+﻿@model IEnumerable<QLNS.Models.Bill>
+
+@{
+    ViewBag.Title = "Index";
+    var stt = 0;
+}
+
+<link href="~/Assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+<a data-bs-toggle="modal" data-bs-target="#createNewModal" class="btn btn-primary btn-icon-split" style="margin-bottom:10px">
+    <span class="icon text-white-50">
+        +
+    </span>
+    <span class="text">Thêm hóa đơn</span>
+</a>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Danh sách hóa đơn</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            STT
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.IdCheck)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Date)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Value)
+                        </th>
+                        <th>
+                            Thao tác
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @{
+                                    stt++;
+                                }
+                                @stt
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdCheck)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Value)
+                            </td>
+                            <td>
+                               
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal" data-id="@item.Id">
+                                    Sửa
+                                </button>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal_@item.Id">
+                                    Xóa
+                                </button>
+                                <div class="modal fade" id="deleteModal_@item.Id" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Chắc chắn xóa?</h5>
+                                                <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">Bán có chắc chắn muốn xóa bản ghi này @item.Id</div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Hủy</button>
+                                                <form action="@Url.Action("DeleteConfirmed", "Bills", new { id = item.Id })" method="post">
+                                                    @Html.AntiForgeryToken()
+                                                    <button type="submit" class="btn btn-danger">Xóa</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="createNewModal" tabindex="-1" role="dialog" aria-labelledby=createNewModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createNewLabel">Thêm mới</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="createNewContent">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby=editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Sửa</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="editContent">
+                <div class="text-center"><span>Đang tải dữ liệu...</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+
+        $(document).ready(function () {
+
+            $('#createNewModal').on('show.bs.modal', function (event) {
+                // Gửi AJAX request
+                $.ajax({
+                    url: `/Bills/Create`,
+                    type: 'GET',
+                    success: function (data) {
+
+                        $('#createNewContent').html(data);
+                        console.log(data)
+                    }
+                });
+            });
+
+        });
+    </script>
+    <script>
+        $('#editModal').on('show.bs.modal', function (event) {
+
+            var button = $(event.relatedTarget);
+
+            var employeeId = button.data('id');
+
+
+            // Gửi AJAX request
+            $.ajax({
+                url: `/Bills/Edit/${employeeId}`,
+                type: 'GET',
+                success: function (data) {
+
+                    $('#editContent').html(data);
+                    console.log(data)
+                },
+                error: function () {
+
+                    $('#editContent').html('<p class="text-danger">Không thể tải dữ liệu.</p>');
+                }
+            });
+        });
+    </script>
+    <script src="~/Assets/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Assets/js/demo/datatables-demo.js"></script>
+}

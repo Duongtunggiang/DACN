@@ -2,11 +2,16 @@
 
 @{
     ViewBag.Title = "Index";
+    var stt = 0;
 }
 <link href="~/Assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-@*<p>
-    @Html.ActionLink("Create New", "Create")
-</p>*@
+<style>
+    .avatar-item{
+        width:50px;
+        height:50px;
+        border-radius: 50%;
+    }
+</style>
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">Danh sách nhân viên</h6>
@@ -17,81 +22,149 @@
                 <thead>
                     <tr>
                         <th>
-                            @Html.DisplayNameFor(model => model.LastName)
+                            STT
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.FirstName)
+                            Họ tên
                         </th>
-                        
                         <th>
                             @Html.DisplayNameFor(model => model.Age)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Address)
+                            @Html.DisplayNameFor(model => model.Gender)
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.Phone)
                         </th>
-                        
-                        <th>
-                            @Html.DisplayNameFor(model => model.Gender)
-                        </th>
-                        
                         <th>
                             @Html.DisplayNameFor(model => model.Email)
                         </th>
-                        
-                     
+                        <th>
+                            @Html.DisplayNameFor(model => model.IdCheck)
+                        </th>
+
                         <th>
                             Thao tác
                         </th>
                     </tr>
                 </thead>
-                
+
                 <tbody>
                     @foreach (var item in Model)
                     {
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.LastName)
+                                @{
+                                    stt++;
+                                }
+                                @stt
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.FirstName)
+                                <img class="avatar-item" src="@Url.Content(item.Avatar)" alt="Employee Avatar" /> @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
                             </td>
-
                             <td>
                                 @Html.DisplayFor(modelItem => item.Age)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Address)
+                                @Html.DisplayFor(modelItem => item.Gender)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Phone)
                             </td>
-                            
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Gender)
-                            </td>
-                           
                             <td>
                                 @Html.DisplayFor(modelItem => item.Email)
                             </td>
-                            
-                            
                             <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                                @Html.ActionLink("Details", "Details", new { id = item.Id }) 
-                                @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+                                @Html.DisplayFor(modelItem => item.IdCheck)
+                            </td>
+
+                            <td>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#employeeDetailModal" data-id="@item.Id">
+                                    Xem chi tiết
+                                </button>
                             </td>
                         </tr>
+
                     }
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+<div class="modal fade" id="employeeDetailModal" tabindex="-1" role="dialog" aria-labelledby="employeeDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="employeeDetailModalLabel">Chi tiết nhân viên</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="employeeDetailContent">
+                <div class="text-center"><span>Đang tải dữ liệu...</span></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts{
+    <script>
+
+        $(document).ready(function () {
+
+            $('#employeeDetailModal').on('show.bs.modal', function (event) {
+
+                var button = $(event.relatedTarget); 
+
+                var employeeId = button.data('id'); 
+
+
+                // Gửi AJAX request
+                $.ajax({
+                    url: `/Employees/Details/${employeeId}`, 
+                    type: 'GET',
+                    success: function (data) {
+                        
+                        $('#employeeDetailContent').html(data);
+                        console.log(data)
+                    },
+                    error: function () {
+                        
+                        $('#employeeDetailContent').html('<p class="text-danger">Không thể tải dữ liệu.</p>');
+                    }
+                });
+            });
+
+           
+            $('#employeeDetailModal').on('hidden.bs.modal', function () {
+                $('#employeeDetailContent').html('<div class="text-center"><span>Đang tải dữ liệu...</span></div>');
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            document.getElementById("previewImage").addEventListener("click", function () {
+                document.getElementById("fileInput").click();
+            });
+
+
+            document.getElementById("fileInput").addEventListener("change", function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById("previewImage").src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        })
+        
+    </script>
     <script src="~/Assets/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
     <script src="~/Assets/js/demo/datatables-demo.js"></script>
+
 }

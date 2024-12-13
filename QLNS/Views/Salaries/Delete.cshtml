@@ -1,0 +1,64 @@
+﻿@model QLNS.Models.Salary
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Salary</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Employee.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SalaryBase)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SalaryBase)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.KPI)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.KPI)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateVacation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateVacation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IdCheck)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IdCheck)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

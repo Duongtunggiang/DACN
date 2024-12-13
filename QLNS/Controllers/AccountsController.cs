@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Policy;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 using QLNS.App_Start;
 using QLNS.Models;
 using QLNS.ViewsModel;
+using QRCoder;
 
 namespace QLNS.Controllers
 {
@@ -20,7 +24,7 @@ namespace QLNS.Controllers
         private QLNSContext db = new QLNSContext();
 
         // GET: Accounts
-        
+        [RoleAuthorization("Admin")]
         public ActionResult Index()
         {
             var accounts = db.Accounts.Include(a => a.Employee);
@@ -51,6 +55,11 @@ namespace QLNS.Controllers
                 Session["accountId"] = e.Id;
                 Session["avatar"] = e.Employee.Avatar;
                 Session["name"] = e.Employee.LastName+' '+e.Employee.FirstName;
+                Session["idcheck"] = e.Employee.IdCheck;
+                if (namep == "Admin")
+                {
+                    return RedirectToAction("Admin","Home");
+                }
                 return RedirectToAction("Index", "Home");
             }
             return View();
@@ -66,6 +75,37 @@ namespace QLNS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(ResgisterForm infor)
         {
+            Random random = new Random();
+            string qr;
+            int randomNumber = 0001;
+            var checknumber = db.Employees.Where(p => p.IdCheck == randomNumber.ToString()).FirstOrDefault();
+            do
+            {
+                randomNumber = random.Next(1000, 10000);
+                checknumber = db.Employees.Where(p => p.IdCheck == randomNumber.ToString()).FirstOrDefault();
+            } while (checknumber != null);
+            var jsonData = new
+            {
+                Name = $"{infor.LastName} {infor.FirstName}",
+                Email = infor.Email,
+                IdCheck=randomNumber,
+            };
+            string jsonString = JsonConvert.SerializeObject(jsonData);
+            // Bước 3: Tạo QR Code
+            using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
+            {
+                QRCodeData qrCodeData = qrGenerator.CreateQrCode(jsonString, QRCodeGenerator.ECCLevel.Q);
+                using (QRCode qrCode = new QRCode(qrCodeData))
+                {
+                    using (Bitmap qrCodeImage = qrCode.GetGraphic(10))
+                    {
+                        string filePath = Server.MapPath("~/UploadedFiles/QRCode/") + $"{infor.Email}.png";
+                        qrCodeImage.Save(filePath);
+                        qr = $"/UploadedFiles/QRCode/{infor.Email}.png";
+                        ViewBag.QRCodeImagePath = $"/UploadedFiles/QRCode/{infor.Email}.png";
+                    }
+                }
+            }
             var e = new Employee()
             {
                 FirstName = infor.FirstName,
@@ -73,7 +113,9 @@ namespace QLNS.Controllers
                 Email = infor.Email,
                 Coe = 1.2,
                 StartDate = DateTime.Now,
-                Avatar= "avatar.png"
+                Avatar = "/UploadedFiles/avatar.png",
+                IdCheck = randomNumber.ToString(),
+                QRCode = qr
 
             };
             db.Employees.Add(e);
@@ -93,6 +135,7 @@ namespace QLNS.Controllers
             };
             db.Account_Positions.Add(r);
             db.SaveChanges();
+           
             return RedirectToAction("Login");
         }
         public ActionResult Logout()
@@ -118,7 +161,7 @@ namespace QLNS.Controllers
         public ActionResult Create()
         {
             ViewBag.Id = new SelectList(db.Employees, "Id", "FirstName");
-            return View();
+            return PartialView();
         }
 
         // POST: Accounts/Create
@@ -126,34 +169,69 @@ namespace QLNS.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Username,Password")] Account account)
+        public ActionResult Create(CreateAccountForm infor)
         {
-            if (ModelState.IsValid)
+            Random random = new Random();
+            string qr;
+            int randomNumber = 0001;
+            var checknumber = db.Employees.Where(p => p.IdCheck == randomNumber.ToString()).FirstOrDefault();
+            do
             {
-                var e = new Employee()
+                randomNumber = random.Next(1000, 10000);
+                checknumber = db.Employees.Where(p => p.IdCheck == randomNumber.ToString()).FirstOrDefault();
+            } while (checknumber != null);
+            var jsonData = new
+            {
+                Name = $"{infor.LastName} {infor.FirstName}",
+                Email = infor.Email,
+                IdCheck = randomNumber,
+            };
+            string jsonString = JsonConvert.SerializeObject(jsonData);
+            // Bước 3: Tạo QR Code
+            using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
+            {
+                QRCodeData qrCodeData = qrGenerator.CreateQrCode(jsonString, QRCodeGenerator.ECCLevel.Q);
+                using (QRCode qrCode = new QRCode(qrCodeData))
                 {
-                    FirstName = "Dương",
-                    LastName = "Dương",
-                    Coe = 1.2,
-                    Email=account.Username,
-                    StartDate = DateTime.Now,
-                };
-                db.Employees.Add(e);
-                db.SaveChanges();
-                account.Id = e.Id;
-                db.Accounts.Add(account);
-                db.SaveChanges();
-                var role = new Account_Position()
-                {
-                    AccountId = account.Id,
-                    PositionId = db.Positions.Where(r => r.Name == "Employee").FirstOrDefault().Id,
-                };
-                db.Account_Positions.Add(role);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                    using (Bitmap qrCodeImage = qrCode.GetGraphic(10))
+                    {
+                        string filePath = Server.MapPath("~/UploadedFiles/QRCode/") + $"{infor.Email}.png";
+                        qrCodeImage.Save(filePath);
+                        qr = $"/UploadedFiles/QRCode/{infor.Email}.png";
+                        ViewBag.QRCodeImagePath = $"/UploadedFiles/QRCode/{infor.Email}.png";
+                    }
+                }
             }
-            ViewBag.Id = new SelectList(db.Employees, "Id", "FirstName", account.Id);
-            return View(account);
+            var e = new Employee()
+            {
+                FirstName = infor.FirstName,
+                LastName = infor.LastName,
+                Email = infor.Email,
+                Coe = 1.2,
+                StartDate = DateTime.Now,
+                Avatar = "/UploadedFiles/avatar.png",
+                IdCheck = randomNumber.ToString(),
+                QRCode = qr
+
+            };
+            db.Employees.Add(e);
+            db.SaveChanges();
+            var a = new Account()
+            {
+                Username = infor.Email,
+                Password = infor.Password,
+            };
+            a.Id = e.Id;
+            db.Accounts.Add(a);
+            db.SaveChanges();
+            var r = new Account_Position()
+            {
+                AccountId = a.Id,
+                PositionId = db.Positions.Where(p => p.Name == "Employee").FirstOrDefault().Id,
+            };
+            db.Account_Positions.Add(r);
+            db.SaveChanges();
+            return View();
         }
 
         // GET: Accounts/Edit/5
@@ -169,7 +247,7 @@ namespace QLNS.Controllers
                 return HttpNotFound();
             }
             ViewBag.Id = new SelectList(db.Employees, "Id", "FirstName", account.Id);
-            return View(account);
+            return PartialView(account);
         }
 
         // POST: Accounts/Edit/5
@@ -190,22 +268,10 @@ namespace QLNS.Controllers
         }
 
         // GET: Accounts/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Account account = db.Accounts.Find(id);
-            if (account == null)
-            {
-                return HttpNotFound();
-            }
-            return View(account);
-        }
+     
 
         // POST: Accounts/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
@@ -250,15 +316,20 @@ namespace QLNS.Controllers
             }
             ViewBag.Id = new SelectList(db.Accounts, "Id", "Username", employee.Id);
             ViewBag.Id = new SelectList(db.Salaries, "Id", "Id", employee.Id);
-            return View(employee);
+            return PartialView(employee);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditInfor([Bind(Include = "Id,FirstName,LastName,Age,Address,Phone,Gender,StartDate,Email,Coe,Description,AccountId")] Employee employee, HttpPostedFileBase file)
+        public ActionResult EditInfor([Bind(Include = "Id,FirstName,LastName,Age,Address,Phone,Gender,StartDate,Email,Coe,Description,AccountId,CCCD,BHYT")] Employee employee, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
-                if (file.ContentLength > 0)
+                // Lấy thông tin hiện tại của nhân viên từ cơ sở dữ liệu
+                var existingEmployee = db.Employees.Find(employee.Id);
+
+               
+                // Cập nhật Avatar nếu có file tải lên
+                if (file != null && file.ContentLength > 0)
                 {
                     string originalFileName = Path.GetFileNameWithoutExtension(file.FileName);
                     string fileExtension = Path.GetExtension(file.FileName);
@@ -270,21 +341,39 @@ namespace QLNS.Controllers
 
                     file.SaveAs(_path);
 
-                    employee.Avatar = "/UploadedFiles/"+newFileName;
-                    @Session["avatar"] = employee.Avatar;
+                    existingEmployee.Avatar = "/UploadedFiles/" + newFileName;
+                    Session["avatar"] = existingEmployee.Avatar; 
                 }
-                ViewBag.Message = "File Uploaded Successfully!!";
-                
-                db.Entry(employee).State = EntityState.Modified;
+                else
+                {
+                    employee.Avatar = existingEmployee.Avatar;
+                }
+                existingEmployee.FirstName = employee.FirstName;
+                existingEmployee.LastName = employee.LastName;
+                existingEmployee.Age = employee.Age;
+                existingEmployee.Address = employee.Address;
+                existingEmployee.Phone = employee.Phone;
+                existingEmployee.Gender = employee.Gender;
+                existingEmployee.StartDate = employee.StartDate;
+                existingEmployee.Email = employee.Email;
+                existingEmployee.Coe = employee.Coe;
+                existingEmployee.Description = employee.Description;
+                existingEmployee.AccountId = employee.AccountId;
+                existingEmployee.CCCD = employee.CCCD;
+                existingEmployee.BHYT = employee.BHYT;
+
+                db.Entry(existingEmployee).State = EntityState.Modified;
                 db.SaveChanges();
+
                 return RedirectToAction("AccountInfor");
             }
+
             ViewBag.Id = new SelectList(db.Accounts, "Id", "Username", employee.Id);
             ViewBag.Id = new SelectList(db.Salaries, "Id", "Id", employee.Id);
-            
+
             return View(employee);
         }
-        
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

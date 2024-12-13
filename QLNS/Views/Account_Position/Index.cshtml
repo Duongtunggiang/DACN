@@ -2,17 +2,21 @@
 
 @{
     ViewBag.Title = "Index";
+    var stt = 0;
 }
 <link href="~/Assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Danh sách tài khoản</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Phân quyền</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
+                        <th>
+                            STT
+                        </th>
                         <th>
                             @Html.DisplayNameFor(model => model.Account.Username)
                         </th>
@@ -30,14 +34,23 @@
                     {
                         <tr>
                             <td>
+                                @{
+                                    stt++;
+                                }
+                                @stt
+                            </td>
+                            <td>
                                 @Html.DisplayFor(modelItem => item.Account.Username)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Position.Name)
                             </td>
                             <td>
-                                @Html.ActionLink("Edit", "Edit", new { accountId = item.AccountId }) |
-                                @Html.ActionLink("Details", "Details", new { accountId = item.AccountId })
+                                
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal" data-id="@item.AccountId">
+                                    Sửa
+                                </button>
+                                
                             </td>
                         </tr>
                     }
@@ -46,7 +59,47 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby=editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Sửa</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="editContent">
+                <div class="text-center"><span>Đang tải dữ liệu...</span></div>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts{
+
+    <script>
+        $('#editModal').on('show.bs.modal', function (event) {
+
+            var button = $(event.relatedTarget);
+
+            var employeeId = button.data('id');
+
+
+            // Gửi AJAX request
+            $.ajax({
+                url: `/Account_Position/Edit?accountId=${employeeId}`,
+                type: 'GET',
+                success: function (data) {
+
+                    $('#editContent').html(data);
+                    console.log(data)
+                },
+                error: function () {
+
+                    $('#editContent').html('<p class="text-danger">Không thể tải dữ liệu.</p>');
+                }
+            });
+        });
+    </script>
     <script src="~/Assets/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
     <script src="~/Assets/js/demo/datatables-demo.js"></script>

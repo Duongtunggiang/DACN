@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "CheckOut";
+}
+
+<h1>Check-out</h1>
+<div id="reader" style="width: 600px;"></div>
+
+<div id="result" hidden></div>
+
+@section Scripts{
+    <script src="~/Assets/js/scanqr.js"></script>
+    <script>
+        const resultElement = document.getElementById('result');
+
+        function onScanSuccess(decodedText, decodedResult) {
+            console.log(`Mã QR: ${decodedText}`, decodedResult);
+            resultElement.textContent = decodedText;
+
+            // Gửi dữ liệu mã QR về server
+            fetch('/Check/CheckOut', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ qrData: decodedText })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Dữ liệu xử lý thành công:', data.message);
+                        alert(data.message); // Thông báo thành công
+                        console.log(data.data)
+                    } else {
+                        console.error('Lỗi xử lý:', data.message);
+                        alert('Xử lý thất bại: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi gửi dữ liệu:', error);
+                    alert('Lỗi kết nối tới server.');
+                });
+        }
+
+        function onScanFailure(error) {
+            console.warn(`Quét lỗi: ${error}`);
+        }
+
+        const html5QrcodeScanner = new Html5QrcodeScanner("reader", {
+            fps: 10,
+            qrbox: { width: 250, height: 250 }
+        });
+
+        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+    </script>
+}

@@ -1,0 +1,58 @@
+﻿@model QLNS.Models.Salary
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Salary</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Employee.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SalaryBase)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SalaryBase)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.KPI)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.KPI)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateVacation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateVacation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IdCheck)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IdCheck)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

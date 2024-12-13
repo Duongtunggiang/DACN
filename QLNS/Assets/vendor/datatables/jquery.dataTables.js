@@ -11583,7 +11583,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfoFiltered": "(filtered from _MAX_ total entries)",
+			"sInfoFiltered": "(lọc từ _MAX_ bản ghi)",
 	
 	
 			/**
@@ -11839,7 +11839,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sZeroRecords": "No matching records found"
+			"sZeroRecords": "Không tìm thấy bản ghi nào"
 		},
 	
 	

@@ -6,10 +6,13 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using QLNS.App_Start;
 using QLNS.Models;
 
 namespace QLNS.Controllers
 {
+    [RoleAuthorization("Admin")]
+
     public class Account_PositionController : Controller
     {
         private QLNSContext db = new QLNSContext();
@@ -77,7 +80,7 @@ namespace QLNS.Controllers
             }
             ViewBag.AccountId = new SelectList(db.Accounts, "Id", "Username", account_Position.AccountId);
             ViewBag.PositionId = new SelectList(db.Positions, "Id", "Name", account_Position.PositionId);
-            return View(account_Position);
+            return PartialView(account_Position);
         }
 
         // POST: Account_Position/Edit/5

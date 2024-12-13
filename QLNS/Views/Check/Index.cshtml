@@ -1,0 +1,77 @@
+﻿@model IEnumerable<QLNS.Models.CheckInOut>
+
+@{
+    ViewBag.Title = "Index";
+    var stt = 0;
+}
+
+
+<link href="~/Assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Lịch sử check in/out</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            STT
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.IdCheck)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CheckInTime)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CheckOutTime)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Coe)
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @{
+                                    stt++;
+                                }
+                                @stt
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdCheck)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CheckInTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CheckOutTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Coe)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/Assets/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Assets/js/demo/datatables-demo.js"></script>
+}

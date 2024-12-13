@@ -12,7 +12,9 @@ namespace QLNS.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        [Display(Name = "Tên chức vụ")]
         public string Name { get; set; }
+        [Display(Name = "Mô tả")]
         public string Description { get; set; }
         public virtual ICollection<Account_Position> Account_Positions { get; set; }
     }

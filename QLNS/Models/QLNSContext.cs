@@ -13,14 +13,12 @@ namespace QLNS.Models
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Account_Position> Account_Positions { get; set; }
+        public DbSet<CheckInOut> CheckInOuts { get; set; }
+        public DbSet<SalaryHistory> SalaryHistories  { get; set; }
+        public DbSet<Vacation> Vacations { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            // Thiết lập quan hệ 1-1 giữa Employee và Salary
-            modelBuilder.Entity<Employee>()
-                .HasOptional(e => e.Salary)
-                .WithRequired(s => s.Employee);
-
             // Thiết lập quan hệ 1-1 giữa Employee và Account
             modelBuilder.Entity<Employee>()
                 .HasOptional(e => e.Account)
@@ -40,5 +38,7 @@ namespace QLNS.Models
 
             base.OnModelCreating(modelBuilder);
         }
+
+        public System.Data.Entity.DbSet<QLNS.Models.Bill> Bills { get; set; }
     }
 }

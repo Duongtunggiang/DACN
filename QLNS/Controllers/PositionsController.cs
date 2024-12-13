@@ -6,10 +6,12 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using QLNS.App_Start;
 using QLNS.Models;
 
 namespace QLNS.Controllers
 {
+    [RoleAuthorization("Admin")]
     public class PositionsController : Controller
     {
         private QLNSContext db = new QLNSContext();
@@ -38,7 +40,7 @@ namespace QLNS.Controllers
         // GET: Positions/Create
         public ActionResult Create()
         {
-            return View();
+            return PartialView();
         }
 
         // POST: Positions/Create
@@ -70,7 +72,7 @@ namespace QLNS.Controllers
             {
                 return HttpNotFound();
             }
-            return View(position);
+            return PartialView(position);
         }
 
         // POST: Positions/Edit/5
@@ -105,7 +107,7 @@ namespace QLNS.Controllers
         }
 
         // POST: Positions/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {

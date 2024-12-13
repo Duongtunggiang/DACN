@@ -52,10 +52,65 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus, Version=7.5.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>packages\EPPlus.7.5.1\lib\net462\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus.Interfaces, Version=7.5.0.0, Culture=neutral, PublicKeyToken=a694d7f3b0907a61, processorArchitecture=MSIL">
+      <HintPath>packages\EPPlus.Interfaces.7.5.0\lib\net462\EPPlus.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus.System.Drawing, Version=7.5.0.0, Culture=neutral, PublicKeyToken=2308d35469c9bac0, processorArchitecture=MSIL">
+      <HintPath>packages\EPPlus.System.Drawing.7.5.0\lib\net462\EPPlus.System.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.4.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.SignalR.Core.2.4.3\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.4.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.SignalR.SystemWeb.2.4.3\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.IO.RecyclableMemoryStream.3.0.1\lib\netstandard2.0\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Owin.2.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Owin.Host.SystemWeb.2.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Owin.Security.2.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="QRCoder, Version=1.6.0.0, Culture=neutral, PublicKeyToken=c4ed5b9ae8358a28, processorArchitecture=MSIL">
+      <HintPath>packages\QRCoder.1.6.0\lib\net40\QRCoder.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Common, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Drawing.Common.8.0.4\lib\net462\System.Drawing.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -117,6 +172,13 @@
       <Private>True</Private>
       <HintPath>packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="zxing, Version=0.16.9.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>packages\ZXing.Net.0.16.9\lib\net47\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.16.9.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>packages\ZXing.Net.0.16.9\lib\net47\zxing.presentation.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
@@ -128,11 +190,16 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RoleAuthorizationAttribute.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\Account_PositionController.cs" />
+    <Compile Include="Controllers\BillsController.cs" />
+    <Compile Include="Controllers\CheckController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PositionsController.cs" />
+    <Compile Include="Controllers\SalariesController.cs" />
+    <Compile Include="Controllers\VacationsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -140,18 +207,62 @@
     <Compile Include="Migrations\202410110631479_Init.designer.cs">
       <DependentUpon>202410110631479_Init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202411250705469_updatecheckinou.cs" />
+    <Compile Include="Migrations\202411250705469_updatecheckinou.designer.cs">
+      <DependentUpon>202411250705469_updatecheckinou.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202411260756595_updateInfoEmployeeTable.cs" />
+    <Compile Include="Migrations\202411260756595_updateInfoEmployeeTable.designer.cs">
+      <DependentUpon>202411260756595_updateInfoEmployeeTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202411280913553_updatehistorytable.cs" />
+    <Compile Include="Migrations\202411280913553_updatehistorytable.designer.cs">
+      <DependentUpon>202411280913553_updatehistorytable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202411280934215_updatebilltable.cs" />
+    <Compile Include="Migrations\202411280934215_updatebilltable.designer.cs">
+      <DependentUpon>202411280934215_updatebilltable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202411290844257_RemoveEmployeeSalaryRelation.cs" />
+    <Compile Include="Migrations\202411290844257_RemoveEmployeeSalaryRelation.designer.cs">
+      <DependentUpon>202411290844257_RemoveEmployeeSalaryRelation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202412030148089_addNametoTableSalary.cs" />
+    <Compile Include="Migrations\202412030148089_addNametoTableSalary.designer.cs">
+      <DependentUpon>202412030148089_addNametoTableSalary.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202412040245323_updateSalaryHistoryTable.cs" />
+    <Compile Include="Migrations\202412040245323_updateSalaryHistoryTable.designer.cs">
+      <DependentUpon>202412040245323_updateSalaryHistoryTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202412040633023_updateSalaryHistoryTable2.cs" />
+    <Compile Include="Migrations\202412040633023_updateSalaryHistoryTable2.designer.cs">
+      <DependentUpon>202412040633023_updateSalaryHistoryTable2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202412040821144_updateSalaryHistoryTable3.cs" />
+    <Compile Include="Migrations\202412040821144_updateSalaryHistoryTable3.designer.cs">
+      <DependentUpon>202412040821144_updateSalaryHistoryTable3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Account_Position.cs" />
+    <Compile Include="Models\Bill.cs" />
+    <Compile Include="Models\CheckInOut.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\Position.cs" />
     <Compile Include="Models\QLNSContext.cs" />
     <Compile Include="Models\Salary.cs" />
+    <Compile Include="Models\SalaryHistory.cs" />
+    <Compile Include="Models\Vacation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewsModel\CheckForm.cs" />
+    <Compile Include="ViewsModel\CreateAccountForm.cs" />
     <Compile Include="ViewsModel\LoginForm.cs" />
     <Compile Include="ViewsModel\ResgisterForm.cs" />
+    <Compile Include="ViewsModel\SelectEmployee.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\css\custom.css" />
     <Content Include="Assets\css\sb-admin-2.css" />
     <Content Include="Assets\css\sb-admin-2.min.css" />
     <Content Include="Assets\img\undraw_posting_photo.svg" />
@@ -166,6 +277,7 @@
     <Content Include="Assets\js\demo\datatables-demo.js" />
     <Content Include="Assets\js\sb-admin-2.js" />
     <Content Include="Assets\js\sb-admin-2.min.js" />
+    <Content Include="Assets\js\scanqr.js" />
     <Content Include="Assets\vendor\bootstrap\js\bootstrap.bundle.js" />
     <Content Include="Assets\vendor\bootstrap\js\bootstrap.bundle.min.js" />
     <Content Include="Assets\vendor\bootstrap\js\bootstrap.js" />
@@ -2038,6 +2150,8 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.signalR-2.4.3.js" />
+    <Content Include="Scripts\jquery.signalR-2.4.3.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -2082,6 +2196,31 @@
     <Content Include="Views\Employees\Index.cshtml" />
     <Content Include="Views\Accounts\AccountInfor.cshtml" />
     <Content Include="Views\Accounts\EditInfor.cshtml" />
+    <Content Include="Views\Check\CheckIn.cshtml" />
+    <Content Include="Views\Check\CheckOut.cshtml" />
+    <Content Include="Views\Check\Index.cshtml" />
+    <Content Include="Views\Home\NotFound.cshtml" />
+    <Content Include="Views\Home\Admin.cshtml" />
+    <Content Include="Views\Bills\Create.cshtml" />
+    <Content Include="Views\Bills\Delete.cshtml" />
+    <Content Include="Views\Bills\Details.cshtml" />
+    <Content Include="Views\Bills\Edit.cshtml" />
+    <Content Include="Views\Bills\Index.cshtml" />
+    <Content Include="Views\Salaries\Create.cshtml" />
+    <Content Include="Views\Salaries\Delete.cshtml" />
+    <Content Include="Views\Salaries\Details.cshtml" />
+    <Content Include="Views\Salaries\Edit.cshtml" />
+    <Content Include="Views\Salaries\Index.cshtml" />
+    <Content Include="Views\Vacations\Create.cshtml" />
+    <Content Include="Views\Vacations\Delete.cshtml" />
+    <Content Include="Views\Vacations\Details.cshtml" />
+    <Content Include="Views\Vacations\Edit.cshtml" />
+    <Content Include="Views\Vacations\Index.cshtml" />
+    <Content Include="Views\Salaries\HistorySalary.cshtml" />
+    <Content Include="Views\Salaries\HistorySalaryEmployee.cshtml" />
+    <Content Include="Views\Bills\HistoryBillEmployee.cshtml" />
+    <Content Include="Views\Vacations\HistoryVacationEmployee.cshtml" />
+    <Content Include="Views\Vacations\CreateByEmp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2117,6 +2256,33 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202410110631479_Init.resx">
       <DependentUpon>202410110631479_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202411250705469_updatecheckinou.resx">
+      <DependentUpon>202411250705469_updatecheckinou.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202411260756595_updateInfoEmployeeTable.resx">
+      <DependentUpon>202411260756595_updateInfoEmployeeTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202411280913553_updatehistorytable.resx">
+      <DependentUpon>202411280913553_updatehistorytable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202411280934215_updatebilltable.resx">
+      <DependentUpon>202411280934215_updatebilltable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202411290844257_RemoveEmployeeSalaryRelation.resx">
+      <DependentUpon>202411290844257_RemoveEmployeeSalaryRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202412030148089_addNametoTableSalary.resx">
+      <DependentUpon>202412030148089_addNametoTableSalary.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202412040245323_updateSalaryHistoryTable.resx">
+      <DependentUpon>202412040245323_updateSalaryHistoryTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202412040633023_updateSalaryHistoryTable2.resx">
+      <DependentUpon>202412040633023_updateSalaryHistoryTable2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202412040821144_updateSalaryHistoryTable3.resx">
+      <DependentUpon>202412040821144_updateSalaryHistoryTable3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

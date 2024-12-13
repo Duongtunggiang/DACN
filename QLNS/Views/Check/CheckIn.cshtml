@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewBag.Title = "CheckIn";
+}
+
+<h1>Check-in</h1>
+<div id="reader" style="width: 600px;"></div>
+<div id="checkIn" hidden></div>
+
+@section Scripts{
+    <script src="~/Assets/js/scanqr.js"></script>
+    <script>
+        const resultElement = document.getElementById('checkIn');
+
+        function onScanSuccess(decodedText, decodedResult) {
+            console.log(`Mã QR: ${decodedText}`, decodedResult);
+            resultElement.textContent = decodedText;
+
+            // Gửi dữ liệu mã QR về server
+            fetch('/Check/CheckIn', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ qrData: decodedText })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Dữ liệu xử lý thành công:', data.message);
+                        alert(data.message); // Thông báo thành công
+                        console.log(data.data)
+                    } else {
+                        console.error('Lỗi xử lý:', data.message);
+                        alert('Xử lý thất bại: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi gửi dữ liệu:', error);
+                    alert('Lỗi kết nối tới server.');
+                });
+        }
+
+        function onScanFailure(error) {
+            console.warn(`Quét lỗi: ${error}`);
+        }
+
+        const html5QrcodeScanner = new Html5QrcodeScanner("reader", {
+            fps: 10,
+            qrbox: { width: 250, height: 250 }
+        });
+
+        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+    </script>
+}
+
+@*@model Byte[]
+    @using (Html.BeginForm(null, null, FormMethod.Post))
+    {
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <label>Enter text for creating QR Code</label>
+                    </td>
+                    <td>
+                        <input type="text" name="qrText" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button>Submit</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    }*@
+
+@*@{
+        if (Model != null)
+        {
+            <h3>QR Code Successfully Generated</h3>
+            <img src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(Model))" />
+        }
+    }*@

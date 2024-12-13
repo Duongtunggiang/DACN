@@ -1,123 +1,206 @@
 ﻿@model QLNS.Models.Employee
 @{
     ViewBag.Title = "AccountInfor";
+    string role = "Quản lý";
+    if (Session["role"].ToString() == "Admin")
+    {
+        role = "Quản lý";
+    }
+    else
+    {
+        role = "Nhân viên";
+    }
 }
+<link href="~/Assets/css/custom.css" rel="stylesheet" />
 
-<h2>Thông tin tài khoản</h2>
-<div>
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Account.Username)
-        </dt>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card shadow ">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Ảnh đại diện</h6>
+            </div>
+            <div class="card-body avatar">
+                <img src="@Url.Content(Model.Avatar)" alt="Employee Avatar" />
+                <p class="name">@Model.LastName @Model.FirstName - @role</p>
+                <p>@Model.Age tuổi</p>
 
-        <dd>
-            @Html.DisplayFor(model => model.Account.Username)
-        </dd>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Thông tin </h6>
+            </div>
+            <div class="card-body infor">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <span class="title">
+                            @Html.DisplayNameFor(model => model.FirstName):
+                        </span>
+                        <span>
+                            @Html.DisplayFor(model => model.FirstName)
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Salary.Id)
-        </dt>
+                        </span>
+                    </div>
+                    <div class="col-lg-4">
+                        <span class="title">
+                            @Html.DisplayNameFor(model => model.LastName):
+                        </span>
+                        <span>
+                            @Html.DisplayFor(model => model.LastName)
 
-        <dd>
-            @Html.DisplayFor(model => model.Salary.Id)
-        </dd>
+                        </span>
+                    </div>
+                    <div class="col-lg-4">
+                        <span class="title">
+                            @Html.DisplayNameFor(model => model.Age):
+                        </span>
+                        <span>
+                            @Html.DisplayFor(model => model.Age)
 
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
+                        </span>
+                    </div>
+                    <hr />
+                    <div class="col-lg-4">
+                        <span class="title">
+                            @Html.DisplayNameFor(model => model.Gender):
+                        </span>
+                        <span>
+                            @Html.DisplayFor(model => model.Gender)
 
-        <dd>
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
+                        </span>
+                    </div>
+                    <div class="col-lg-4">
+                        <span class="title">
+                            @Html.DisplayNameFor(model => model.Phone):
+                        </span>
+                        <span>
+                            @Html.DisplayFor(model => model.Phone)
 
-        <dt>
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
+                        </span>
+                    </div>
+                    <div class="col-lg-4">
+                        <span class="title">
+                            @Html.DisplayNameFor(model => model.Email):
+                        </span>
+                        <span>
+                            @Html.DisplayFor(model => model.Email)
 
-        <dd>
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
+                        </span>
+                    </div>
+                    <hr />
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Age)
-        </dt>
+                    <div class="col-lg-4">
+                        <span class="title">
+                            @Html.DisplayNameFor(model => model.CCCD):
+                        </span>
+                        <span>
+                            @Html.DisplayFor(model => model.CCCD)
 
-        <dd>
-            @Html.DisplayFor(model => model.Age)
-        </dd>
+                        </span>
+                    </div>
+                    <div class="col-lg-4">
+                        <span class="title">
+                            @Html.DisplayNameFor(model => model.BHYT):
+                        </span>
+                        <span>
+                            @Html.DisplayFor(model => model.BHYT)
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
+                        </span>
+                    </div>
+                    <div class="col-lg-4">
+                        <span class="title">
+                            @Html.DisplayNameFor(model => model.Address):
+                        </span>
+                        <span>
+                            @Html.DisplayFor(model => model.Address)
 
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
+                        </span>
+                    </div>
+                    <hr />
+                    <div class="col-lg-4">
+                        <span class="title">
+                            @Html.DisplayNameFor(model => model.StartDate):
+                        </span>
+                        <span>
+                            @Html.DisplayFor(model => model.StartDate)
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
+                        </span>
+                    </div>
+                    <div class="col-lg-4">
+                        <span class="title">
+                            @Html.DisplayNameFor(model => model.IdCheck):
+                        </span>
+                        <span>
+                            @Html.DisplayFor(model => model.IdCheck)
 
-        <dd>
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
+                        </span>
+                    </div>
+                    <div class="col-lg-4">
+                        <span class="title">
+                            @Html.DisplayNameFor(model => model.QRCode):
+                        </span>
+                        <div class="qrcode">
+                            <img src="@Model.QRCode" alt="Alternate Text" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="col-lg-4">
+                        <span class="title">
+                            @Html.DisplayNameFor(model => model.Description):
+                        </span>
+                        <span>
+                            @Html.DisplayFor(model => model.Description)
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Avatar)
-        </dt>
+                        </span>
+                    </div>
+                    <hr />
+                    <div class="col-lg-12">
+                        <a class="btn btn-primary btn-icon-split" style="margin-bottom:10px" href="#" data-toggle="modal" data-target="#editinforModal">
 
-        <dd>
-            <img src="@Url.Content(Model.Avatar)" alt="Employee Avatar" />
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Gender)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Gender)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Coe)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Coe)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.AccountId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AccountId)
-        </dd>
-
-    </dl>
+                            <span class="text">Sửa</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-@Html.ActionLink("Edit", "EditInfor", new { id = Model.Id })
+
+<div class="modal fade" id="editinforModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sửa thông tin</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" id="editinforModalContent">@Html.Partial("EditInfor")</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        document.getElementById("previewImage").addEventListener("click", function () {
+            document.getElementById("fileInput").click();
+        });
+
+        // Hiển thị ảnh xem trước sau khi chọn file
+        document.getElementById("fileInput").addEventListener("change", function (event) {
+            const file = event.target.files[0]; // Lấy file đầu tiên
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("previewImage").src = e.target.result; // Cập nhật src của ảnh
+                };
+                reader.readAsDataURL(file); // Đọc file dưới dạng Data URL
+            }
+        });
+    </script>
+}
